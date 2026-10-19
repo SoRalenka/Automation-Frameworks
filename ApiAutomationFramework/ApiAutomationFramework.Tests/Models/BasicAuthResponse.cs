@@ -1,0 +1,12 @@
+using System.Text.Json.Serialization;
+
+namespace ApiAutomationFramework.Tests.Models;
+
+public class BasicAuthResponse
+{
+    [JsonPropertyName("authenticated")]
+    public bool Authenticated { get; set; }
+
+    [JsonPropertyName("user")]
+    public string User { get; set; } = string.Empty;
+}

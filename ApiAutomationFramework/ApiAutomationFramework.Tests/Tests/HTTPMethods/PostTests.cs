@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.Json;
 using ApiAutomationFramework.Tests.Clients;
 using ApiAutomationFramework.Tests.Fixtures;
 using ApiAutomationFramework.Tests.Models;
@@ -16,7 +17,7 @@ public class PostTests : IClassFixture<ApiTestFixture>
     }
 
     [Fact]
-    public async Task Post_ShouldReturn200()
+    public async Task Post_ShouldReturnSentJson()
     {
         var request = new PostRequest
         {
@@ -27,9 +28,17 @@ public class PostTests : IClassFixture<ApiTestFixture>
         var response = await _client.PostAsync(request);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var body = await response.Content.ReadAsStringAsync();
 
-        body.Should().Contain("Sora");
-        body.Should().Contain("SDET");
+        var responseBody =
+        await response.Content.ReadAsStringAsync();
+
+        var result =
+            JsonSerializer.Deserialize<PostResponse>(responseBody);
+
+        result.Should().NotBeNull();
+        result!.Json.Should().NotBeNull();
+
+        result.Json!.Name.Should().Be("Sora");
+        result.Json.Role.Should().Be("SDET");
     }
 }

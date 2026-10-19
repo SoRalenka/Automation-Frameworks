@@ -1,3 +1,6 @@
+using System.Net.Http.Headers;
+using System.Text;
+
 public class ApiRequestHelper
 {
     private readonly HttpClient _httpClient;
@@ -41,5 +44,24 @@ public class ApiRequestHelper
     public async Task<HttpResponseMessage> DeleteAsync(string endpoint)
     {
         return await _httpClient.DeleteAsync(endpoint);
+    }
+
+    public async Task<HttpResponseMessage> GetWithBasicAuthAsync(
+        string endpoint,
+        string username,
+        string password)
+    {
+        var request = new HttpRequestMessage(
+            HttpMethod.Get,
+            endpoint);
+
+        var credentials =
+            Convert.ToBase64String(
+                Encoding.UTF8.GetBytes($"{username}:{password}"));
+
+        request.Headers.Authorization =
+            new AuthenticationHeaderValue("Basic", credentials);
+
+        return await _httpClient.SendAsync(request);
     }
 }

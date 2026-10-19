@@ -43,4 +43,54 @@ public class HttpBinClient
 
         return await _requestHelper.PutAsync("/put", content);
     }
+
+    public async Task<HttpResponseMessage> PatchAsync(PostRequest request)
+    {
+        var json = JsonSerializer.Serialize(request);
+
+        var content = new StringContent(
+            json,
+            Encoding.UTF8,
+            "application/json");
+
+        return await _requestHelper.PatchAsync("/patch", content);
+    }
+
+    public async Task<HttpResponseMessage> DeleteAsync()
+    {
+        return await _requestHelper.DeleteAsync("/delete");
+    }
+
+    public async Task<PostResponse> PostAndDeserializeAsync(PostRequest request)
+    {
+        var response = await PostAsync(request);
+
+        response.EnsureSuccessStatusCode();
+
+        var responseBody =
+            await response.Content.ReadAsStringAsync();
+
+        var result =
+            JsonSerializer.Deserialize<PostResponse>(
+                responseBody);
+
+        return result
+            ?? throw new InvalidOperationException(
+                "Unable to deserialize POST response.");
+    }
+    
+    public async Task<HttpResponseMessage> GetStatusAsync(int statusCode)
+    {
+        return await _requestHelper.GetAsync($"/status/{statusCode}");
+    }
+
+    public async Task<HttpResponseMessage> GetWithBasicAuthAsync(
+        string username,
+        string password)
+    {
+        return await _requestHelper.GetWithBasicAuthAsync(
+            $"/basic-auth/{username}/{password}",
+            username,
+            password);
+    }
 }
