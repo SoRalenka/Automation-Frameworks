@@ -84,12 +84,38 @@ public class HttpBinClient
         return await _requestHelper.GetAsync($"/status/{statusCode}");
     }
 
-    public async Task<HttpResponseMessage> GetWithBasicAuthAsync(
-        string username,
-        string password)
+    public async Task<HttpResponseMessage> GetWithBasicAuthAsync(string username,string password)
     {
         return await _requestHelper.GetWithBasicAuthAsync(
             $"/basic-auth/{username}/{password}",
+            username,
+            password);
+    }
+
+    public async Task<HttpResponseMessage> GetWithBearerTokenAsync(string token)
+    {
+        return await _requestHelper.GetWithBearerTokenAsync("/bearer",token);
+    }
+
+    public async Task<HttpResponseMessage> GetWithDigestAuthAsync(
+        string qop,
+        string username,
+        string password)
+    {
+        return await _requestHelper.GetWithDigestAuthAsync(
+            $"/digest-auth/{qop}/{username}/{password}",
+            username,
+            password);
+    }
+
+    public async Task<HttpResponseMessage> GetDigestAuthWithAlgorithmAsync(
+        string qop,
+        string username,
+        string password,
+        string algorithm)
+    {
+        return await _requestHelper.GetWithDigestAuthAsync(
+            $"/digest-auth/{qop}/{username}/{password}/{algorithm}",
             username,
             password);
     }

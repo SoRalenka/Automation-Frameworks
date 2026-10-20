@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text;
+using System.Net;
 
 public class ApiRequestHelper
 {
@@ -59,9 +60,40 @@ public class ApiRequestHelper
             Convert.ToBase64String(
                 Encoding.UTF8.GetBytes($"{username}:{password}"));
 
-        request.Headers.Authorization =
-            new AuthenticationHeaderValue("Basic", credentials);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
 
         return await _httpClient.SendAsync(request);
+    }
+
+    public async Task<HttpResponseMessage> GetWithBearerTokenAsync(
+        string endpoint,
+        string token)
+    {
+        var request = new HttpRequestMessage(
+            HttpMethod.Get,
+            endpoint);
+
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        return await _httpClient.SendAsync(request);
+    }
+
+    public async Task<HttpResponseMessage> GetWithDigestAuthAsync(
+        string endpoint,
+        string username,
+        string password)
+    {
+        using var handler = new HttpClientHandler
+        {
+            Credentials = new NetworkCredential(username, password),
+            PreAuthenticate = false
+        };
+
+        using var client = new HttpClient(handler)
+        {
+            BaseAddress = _httpClient.BaseAddress
+        };
+
+        return await client.GetAsync(endpoint);
     }
 }
