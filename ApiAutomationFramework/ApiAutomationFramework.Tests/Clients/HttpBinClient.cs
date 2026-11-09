@@ -119,4 +119,27 @@ public class HttpBinClient
             username,
             password);
     }
+
+    public async Task<HttpResponseMessage> GetDigestAuthWithStaleAfterAsync(
+        string qop,
+        string username,
+        string password,
+        int staleAfter)
+    {
+        var endpoint = $"/digest-auth/{qop}/{username}/{password}/{staleAfter}";
+        return await _requestHelper.GetWithDigestAuthAsync(
+            endpoint,
+            username,
+            password);
+    }
+
+    public async Task<HttpResponseMessage> GetWithHiddenBasicAuthAsync(string username, string password)
+    {
+        var endpoint = $"/hidden-basic-auth/{username}/{password}";
+
+        return await _requestHelper.GetWithBasicAuthAsync(
+            endpoint,
+            username,
+            password);
+    }
 }

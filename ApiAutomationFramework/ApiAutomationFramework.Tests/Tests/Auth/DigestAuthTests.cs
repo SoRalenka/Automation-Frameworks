@@ -63,4 +63,26 @@ public class DigestAuthTests : IClassFixture<ApiTestFixture>
         result!.Authenticated.Should().BeTrue();
         result.User.Should().Be(username);
     }
+
+    [Fact]
+    public async Task DigestAuth_WithAlgorithmAndStaleAfter_ShouldAuthenticate(){
+        var qop = "auth";
+        var username = "TestUser";
+        var password = "TestPassword";
+        var algorithm = "MD5";
+        var staleAfter = 5;
+
+        var response = await _client.GetDigestAuthWithStaleAfterAsync(
+            qop,
+            username,
+            password,
+            staleAfter);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var body = await response.Content.ReadAsStringAsync();
+        var result = JsonSerializer.Deserialize<DigestAuthResponse>(body);
+        result.Should().NotBeNull();
+        result!.Authenticated.Should().BeTrue();
+    }
 }
