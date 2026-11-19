@@ -142,4 +142,15 @@ public class HttpBinClient
             username,
             password);
     }
+
+    public async Task<HttpResponseMessage> GetWithQueryParametersAsync(IDictionary<string, string> queryParams)
+    {
+        var request = new ApiRequest{
+            Method = HttpMethod.Get,
+            Endpoint = "/get",
+            QueryParameters = new Dictionary<string, string>(queryParams)
+        };
+
+        return await _requestHelper.SendAsync(request);
+    }
 }
