@@ -153,4 +153,28 @@ public class HttpBinClient
 
         return await _requestHelper.SendAsync(request);
     }
+
+    public async Task<HttpResponseMessage> GetHeadersAsync(IDictionary<string,string> headers)
+    {
+        var request = new ApiRequest{
+            Method = HttpMethod.Get,
+            Endpoint = "/headers",
+            Headers = new Dictionary<string, string>(headers)
+        };
+        return await _requestHelper.SendAsync(request);
+    }
+
+    public async Task<HttpResponseMessage> GetUserAgentAsync(string userAgent)
+    {
+        var request = new ApiRequest
+        {
+            Method = HttpMethod.Get,
+            Endpoint = "/user-agent",
+            Headers = new Dictionary<string, string>
+            {
+                ["User-Agent"] = userAgent
+            }
+        };
+        return await _requestHelper.SendAsync(request);
+    }
 }

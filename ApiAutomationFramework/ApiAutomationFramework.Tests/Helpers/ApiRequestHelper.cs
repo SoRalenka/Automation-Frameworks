@@ -54,6 +54,11 @@ public class ApiRequestHelper
         HttpRequestMessage request,
         IDictionary<string, string>? headers)
     {
+        if(headers == null || headers.Count == 0)
+        {
+            return;
+        }
+        
         foreach (var header in headers)
         {
             request.Headers.TryAddWithoutValidation(header.Key, header.Value);

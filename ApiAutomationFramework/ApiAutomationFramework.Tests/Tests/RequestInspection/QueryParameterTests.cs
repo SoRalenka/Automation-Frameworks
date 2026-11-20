@@ -35,4 +35,35 @@ public class QueryParameterTests : IClassFixture<ApiTestFixture>
         result.Should().NotBeNull();
         result!.Args["name"].Should().Be("Sourabh");
     }
-}   
+
+    [Fact]
+    public async Task Get_WithCustomHeaders_ShouldEchoHeaders()
+    {
+        //Arrange
+        var headers = new Dictionary<string,string>
+        {
+            ["X-Custom-Header"] = "CustomValue",
+            ["X-Another-Header"] = "AnotherValue"
+        };
+
+        var response = await _client.GetHeadersAsync(headers);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var result = await response.Content.ReadFromJsonAsync<GetResponse>();
+        result.Should().NotBeNull();
+        result!.Headers["X-Custom-Header"].Should().Be("CustomValue");
+    }
+
+    [Fact]
+    public async Task Get_WithUserAgent_ShouldEchoUserAgent()
+    {
+        //Arrange
+        var userAgent = "MyCustomUserAgent";
+        var response = await _client.GetUserAgentAsync(userAgent);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var result = await response.Content.ReadFromJsonAsync<UserAgentResponse>();
+        result.Should().NotBeNull();
+        result!.UserAgent.Should().Be(userAgent);
+    }
+}
