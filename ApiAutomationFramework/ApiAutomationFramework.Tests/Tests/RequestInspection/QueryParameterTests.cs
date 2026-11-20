@@ -66,4 +66,15 @@ public class QueryParameterTests : IClassFixture<ApiTestFixture>
         result.Should().NotBeNull();
         result!.UserAgent.Should().Be(userAgent);
     }
+
+    [Fact]
+    public async Task Get_Ip_ShouldReturnOriginIp()
+    {
+        //Arrange
+        var response = await _client.GetIpAsync();
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var result = await response.Content.ReadFromJsonAsync<IpResponse>();
+        result.Should().NotBeNull();
+        result!.Origin.Should().NotBeNullOrEmpty();
+    }
 }

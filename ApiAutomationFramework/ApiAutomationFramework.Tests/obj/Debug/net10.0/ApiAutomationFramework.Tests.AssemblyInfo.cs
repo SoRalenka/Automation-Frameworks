@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiAutomationFramework.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d6fb56906215ac44fb3cf822ff36e8f601e5670")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a431907f53a688978d1de39a035eea3522733fd4")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiAutomationFramework.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiAutomationFramework.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

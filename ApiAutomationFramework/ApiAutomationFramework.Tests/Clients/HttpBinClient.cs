@@ -177,4 +177,14 @@ public class HttpBinClient
         };
         return await _requestHelper.SendAsync(request);
     }
+
+    public async Task<HttpResponseMessage> GetIpAsync()
+    {
+        var request = new ApiRequest
+        {
+            Method = HttpMethod.Get,
+            Endpoint = "/ip"
+        };
+        return await _requestHelper.SendAsync(request);
+    }
 }
